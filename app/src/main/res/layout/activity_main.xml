@@ -10,10 +10,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Crop 9:16"
-        android:textColor="#2196F3"
-        android:textSize="22sp"
+        android:text="SnapFit"
+        android:textColor="#6A1B9A"
+        android:textSize="26sp"
         android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбери формат и подгони фото"
+        android:textColor="#AAAAAA"
+        android:textSize="13sp"
         android:gravity="center"
         android:layout_marginBottom="8dp" />
 
@@ -22,44 +31,72 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#212121"
+        android:background="#1E1E2E"
         android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ФОРМАТ"
+        android:textColor="#AAAAAA"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <Button android:id="@+id/format916" style="@style/FormatButtonActive" android:text="9:16" />
+        <Button android:id="@+id/format11" style="@style/FormatButton" android:text="1:1" />
+        <Button android:id="@+id/format45" style="@style/FormatButton" android:text="4:5" />
+        <Button android:id="@+id/format169" style="@style/FormatButton" android:text="16:9" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/selectBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MainButton"
         android:text="ВЫБРАТЬ ФОТО"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:backgroundTint="#6A1B9A"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/applyBtn"
+            style="@style/MainButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="ПРИМЕНИТЬ"
+            android:backgroundTint="#FF9800"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            style="@style/MainButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="СОХРАНИТЬ"
+            android:backgroundTint="#4CAF50"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/shareBtn"
+        style="@style/MainButton"
+        android:text="ПОДЕЛИТЬСЯ"
         android:backgroundTint="#2196F3"
-        android:padding="12dp"
-        android:layout_marginBottom="8dp" />
-
-    <Button
-        android:id="@+id/applyBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ПРИМЕНИТЬ 9:16"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FF9800"
-        android:padding="12dp"
-        android:enabled="false"
-        android:layout_marginBottom="8dp" />
-
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="СОХРАНИТЬ"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#4CAF50"
-        android:padding="12dp"
         android:enabled="false" />
 
 </LinearLayout>

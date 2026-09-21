@@ -24,24 +24,26 @@ class CropView @JvmOverloads constructor(
     private var lastTouchY = 0f
     private var isDragging = false
 
-    private val imagePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        isFilterBitmap = true
-    }
+    // Соотношение сторон: 9:16 = 0.5625, 1:1 = 1.0, 4:5 = 0.8, 16:9 = 1.777
+    private var targetRatio = 9f / 16f
 
-    private val overlayPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#B3000000")
-    }
-
+    private val imagePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { isFilterBitmap = true }
+    private val overlayPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#B3000000") }
     private val framePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
         strokeWidth = 4f
     }
-
     private val cornerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
         strokeWidth = 6f
         strokeCap = Paint.Cap.ROUND
+    }
+
+    fun setRatio(ratio: Float) {
+        targetRatio = ratio
+        updateFrame()
+        invalidate()
     }
 
     fun setBitmap(bmp: Bitmap) {
@@ -55,7 +57,6 @@ class CropView @JvmOverloads constructor(
 
     fun getCroppedBitmap(): Bitmap? {
         val bmp = bitmap ?: return null
-
         val imgLeft = (frameRect.left - imageX) / scale
         val imgTop = (frameRect.top - imageY) / scale
         val imgRight = (frameRect.right - imageX) / scale
@@ -66,29 +67,22 @@ class CropView @JvmOverloads constructor(
         val right = imgRight.coerceIn(left + 1, bmp.width.toFloat())
         val bottom = imgBottom.coerceIn(top + 1, bmp.height.toFloat())
 
-        val x = left.toInt()
-        val y = top.toInt()
-        val w = (right - left).toInt()
-        val h = (bottom - top).toInt()
-
-        return Bitmap.createBitmap(bmp, x, y, w, h)
+        return Bitmap.createBitmap(bmp, left.toInt(), top.toInt(), (right - left).toInt(), (bottom - top).toInt())
     }
 
     private fun updateFrame() {
         val viewW = width.toFloat()
         val viewH = height.toFloat()
-
         if (viewW == 0f || viewH == 0f) return
 
         val frameW: Float
         val frameH: Float
-
-        if (viewW / viewH > 9f / 16f) {
+        if (viewW / viewH > targetRatio) {
             frameH = viewH
-            frameW = frameH * 9f / 16f
+            frameW = frameH * targetRatio
         } else {
             frameW = viewW
-            frameH = frameW * 16f / 9f
+            frameH = frameW / targetRatio
         }
 
         val left = (viewW - frameW) / 2f
@@ -104,6 +98,7 @@ class CropView @JvmOverloads constructor(
         val scaledH = bmp.height * scale
         imageX = frameRect.centerX() - scaledW / 2f
         imageY = frameRect.centerY() - scaledH / 2f
+        clampImage()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -113,7 +108,6 @@ class CropView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         val bmp = bitmap ?: return
 
         canvas.save()
@@ -129,15 +123,15 @@ class CropView @JvmOverloads constructor(
 
         canvas.drawRect(frameRect, framePaint)
 
-        val cornerLen = 40f
-        canvas.drawLine(frameRect.left, frameRect.top, frameRect.left + cornerLen, frameRect.top, cornerPaint)
-        canvas.drawLine(frameRect.left, frameRect.top, frameRect.left, frameRect.top + cornerLen, cornerPaint)
-        canvas.drawLine(frameRect.right - cornerLen, frameRect.top, frameRect.right, frameRect.top, cornerPaint)
-        canvas.drawLine(frameRect.right, frameRect.top, frameRect.right, frameRect.top + cornerLen, cornerPaint)
-        canvas.drawLine(frameRect.left, frameRect.bottom - cornerLen, frameRect.left, frameRect.bottom, cornerPaint)
-        canvas.drawLine(frameRect.left, frameRect.bottom, frameRect.left + cornerLen, frameRect.bottom, cornerPaint)
-        canvas.drawLine(frameRect.right, frameRect.bottom - cornerLen, frameRect.right, frameRect.bottom, cornerPaint)
-        canvas.drawLine(frameRect.right - cornerLen, frameRect.bottom, frameRect.right, frameRect.bottom, cornerPaint)
+        val c = 40f
+        canvas.drawLine(frameRect.left, frameRect.top, frameRect.left + c, frameRect.top, cornerPaint)
+        canvas.drawLine(frameRect.left, frameRect.top, frameRect.left, frameRect.top + c, cornerPaint)
+        canvas.drawLine(frameRect.right - c, frameRect.top, frameRect.right, frameRect.top, cornerPaint)
+        canvas.drawLine(frameRect.right, frameRect.top, frameRect.right, frameRect.top + c, cornerPaint)
+        canvas.drawLine(frameRect.left, frameRect.bottom - c, frameRect.left, frameRect.bottom, cornerPaint)
+        canvas.drawLine(frameRect.left, frameRect.bottom, frameRect.left + c, frameRect.bottom, cornerPaint)
+        canvas.drawLine(frameRect.right, frameRect.bottom - c, frameRect.right, frameRect.bottom, cornerPaint)
+        canvas.drawLine(frameRect.right - c, frameRect.bottom, frameRect.right, frameRect.bottom, cornerPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -152,10 +146,8 @@ class CropView @JvmOverloads constructor(
             }
             MotionEvent.ACTION_MOVE -> {
                 if (isDragging) {
-                    val dx = event.x - lastTouchX
-                    val dy = event.y - lastTouchY
-                    imageX += dx
-                    imageY += dy
+                    imageX += event.x - lastTouchX
+                    imageY += event.y - lastTouchY
                     clampImage()
                     lastTouchX = event.x
                     lastTouchY = event.y
@@ -175,12 +167,10 @@ class CropView @JvmOverloads constructor(
         val bmp = bitmap ?: return
         val scaledW = bmp.width * scale
         val scaledH = bmp.height * scale
-
         val minX = frameRect.right - scaledW
         val maxX = frameRect.left
         val minY = frameRect.bottom - scaledH
         val maxY = frameRect.top
-
         if (imageX < minX) imageX = minX
         if (imageX > maxX) imageX = maxX
         if (imageY < minY) imageY = minY
