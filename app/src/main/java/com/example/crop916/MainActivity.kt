@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import java.io.InputStream
-import java.io.OutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private var selectedBitmap: Bitmap? = null
 
-    // 9:16 = 1080x1920
     private val targetWidth = 1080
     private val targetHeight = 1920
 
@@ -64,14 +62,13 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            // Обрезаем по центру в 9:16
             val cropped = cropTo916(bitmap)
             selectedBitmap = cropped
 
             previewImage.setImageBitmap(cropped)
             saveBtn.isEnabled = true
 
-            Toast.makeText(this, "Фото готово к сохранению", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Фото готово", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
         }
@@ -89,13 +86,11 @@ class MainActivity : AppCompatActivity() {
         val cropY: Int
 
         if (srcRatio > targetRatio) {
-            // Фото шире — обрезаем по бокам
             cropH = srcH
             cropW = (srcH * targetRatio).toInt()
             cropX = (srcW - cropW) / 2
             cropY = 0
         } else {
-            // Фото выше — обрезаем сверху/снизу
             cropW = srcW
             cropH = (srcW / targetRatio).toInt()
             cropX = 0
@@ -103,8 +98,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val cropped = Bitmap.createBitmap(source, cropX, cropY, cropW, cropH)
-
-        // Масштабируем до 1080x1920
         return Bitmap.createScaledBitmap(cropped, targetWidth, targetHeight, true)
     }
 
@@ -127,9 +120,11 @@ class MainActivity : AppCompatActivity() {
                 values
             ) ?: throw Exception("Не удалось создать файл")
 
-            val outputStream: OutputStream? = contentResolver.openOutputStream(uri)
+            val outputStream = contentResolver.openOutputStream(uri)
+                ?: throw Exception("Не удалось открыть поток")
+
             bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
-            outputStream?.close()
+            outputStream.close()
 
             Toast.makeText(this, "✅ Сохранено в Pictures/Crop916", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
