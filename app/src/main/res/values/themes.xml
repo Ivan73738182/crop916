@@ -10,10 +10,10 @@
 
     <style name="FormatButton">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">44dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="backgroundTint">#2A2A3A</item>
@@ -23,10 +23,10 @@
 
     <style name="FormatButtonActive">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">44dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="backgroundTint">#6A1B9A</item>
@@ -34,13 +34,26 @@
         <item name="android:insetBottom">0dp</item>
     </style>
 
+    <style name="ToolButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="backgroundTint">#2A2A3A</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
     <style name="MainButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:padding">14dp</item>
+        <item name="android:padding">12dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>

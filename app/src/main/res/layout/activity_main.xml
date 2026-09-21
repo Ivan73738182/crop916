@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#121212"
-    android:padding="12dp">
+    android:padding="8dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SnapFit"
-        android:textColor="#6A1B9A"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="4dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Выбери формат и подгони фото"
-        android:textColor="#AAAAAA"
-        android:textSize="13sp"
-        android:gravity="center"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SnapFit"
+            android:textColor="#6A1B9A"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/themeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="☀"
+            android:textSize="18sp"
+            android:backgroundTint="#2A2A3A"
+            android:textColor="#FFFFFF"
+            android:minWidth="50dp" />
+
+    </LinearLayout>
 
     <com.example.crop916.CropView
         android:id="@+id/cropView"
@@ -32,23 +43,23 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#1E1E2E"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ФОРМАТ"
         android:textColor="#AAAAAA"
-        android:textSize="11sp"
+        android:textSize="10sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="4dp">
 
         <Button android:id="@+id/format916" style="@style/FormatButtonActive" android:text="9:16" />
         <Button android:id="@+id/format11" style="@style/FormatButton" android:text="1:1" />
@@ -57,25 +68,69 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/selectBtn"
-        style="@style/MainButton"
-        android:text="ВЫБРАТЬ ФОТО"
-        android:backgroundTint="#6A1B9A"
-        android:layout_marginBottom="8dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="КАЧЕСТВО"
+        android:textColor="#AAAAAA"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="4dp">
+
+        <Button android:id="@+id/quality720" style="@style/FormatButton" android:text="720p" />
+        <Button android:id="@+id/quality1080" style="@style/FormatButtonActive" android:text="1080p" />
+        <Button android:id="@+id/quality1440" style="@style/FormatButton" android:text="1440p" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ИНСТРУМЕНТЫ"
+        android:textColor="#AAAAAA"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="2dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+
+        <Button android:id="@+id/rotateBtn" style="@style/ToolButton" android:text="↻ 90°" />
+        <Button android:id="@+id/undoBtn" style="@style/ToolButton" android:text="↶ Отмена" />
+        <Button android:id="@+id/centerBtn" style="@style/ToolButton" android:text="◎ Центр" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/selectBtn"
+        style="@style/MainButton"
+        android:text="ВЫБРАТЬ ФОТО"
+        android:backgroundTint="#6A1B9A"
+        android:layout_marginBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
 
         <Button
             android:id="@+id/applyBtn"
             style="@style/MainButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="3dp"
             android:text="ПРИМЕНИТЬ"
             android:backgroundTint="#FF9800"
             android:enabled="false" />
@@ -85,7 +140,7 @@
             style="@style/MainButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="3dp"
             android:text="СОХРАНИТЬ"
             android:backgroundTint="#4CAF50"
             android:enabled="false" />
