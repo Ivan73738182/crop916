@@ -5,56 +5,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#121212"
-    android:padding="16dp"
-    android:gravity="center">
+    android:padding="12dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Crop 9:16"
         android:textColor="#2196F3"
-        android:textSize="32sp"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:gravity="center"
         android:layout_marginBottom="8dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Подгон фото под 1080×1920"
-        android:textColor="#AAAAAA"
-        android:textSize="14sp"
-        android:layout_marginBottom="32dp" />
-
-    <ImageView
-        android:id="@+id/previewImage"
-        android:layout_width="220dp"
-        android:layout_height="390dp"
-        android:scaleType="centerCrop"
+    <com.example.crop916.CropView
+        android:id="@+id/cropView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="#212121"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="8dp" />
 
     <Button
         android:id="@+id/selectBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ВЫБРАТЬ ФОТО"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:backgroundTint="#2196F3"
-        android:padding="14dp"
-        android:layout_marginBottom="12dp" />
+        android:padding="12dp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/applyBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ПРИМЕНИТЬ 9:16"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF9800"
+        android:padding="12dp"
+        android:enabled="false"
+        android:layout_marginBottom="8dp" />
 
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="СОХРАНИТЬ В 9:16"
-        android:textSize="18sp"
+        android:text="СОХРАНИТЬ"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:backgroundTint="#4CAF50"
-        android:padding="14dp"
+        android:padding="12dp"
         android:enabled="false" />
 
 </LinearLayout>

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +16,12 @@ import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var previewImage: ImageView
+    private lateinit var cropView: CropView
     private lateinit var selectBtn: Button
+    private lateinit var applyBtn: Button
     private lateinit var saveBtn: Button
 
-    private var selectedBitmap: Bitmap? = null
+    private var croppedBitmap: Bitmap? = null
 
     private val targetWidth = 1080
     private val targetHeight = 1920
@@ -38,12 +38,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        previewImage = findViewById(R.id.previewImage)
+        cropView = findViewById(R.id.cropView)
         selectBtn = findViewById(R.id.selectBtn)
+        applyBtn = findViewById(R.id.applyBtn)
         saveBtn = findViewById(R.id.saveBtn)
 
         selectBtn.setOnClickListener {
             pickImage.launch("image/*")
+        }
+
+        applyBtn.setOnClickListener {
+            applyCrop()
         }
 
         saveBtn.setOnClickListener {
@@ -62,47 +67,27 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            val cropped = cropTo916(bitmap)
-            selectedBitmap = cropped
+            cropView.setBitmap(bitmap)
+            applyBtn.isEnabled = true
+            saveBtn.isEnabled = false
+            croppedBitmap = null
 
-            previewImage.setImageBitmap(cropped)
-            saveBtn.isEnabled = true
-
-            Toast.makeText(this, "Фото готово", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Двигай фото пальцем, потом нажми Применить", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun cropTo916(source: Bitmap): Bitmap {
-        val srcW = source.width
-        val srcH = source.height
-        val targetRatio = 9f / 16f
-        val srcRatio = srcW.toFloat() / srcH.toFloat()
-
-        val cropW: Int
-        val cropH: Int
-        val cropX: Int
-        val cropY: Int
-
-        if (srcRatio > targetRatio) {
-            cropH = srcH
-            cropW = (srcH * targetRatio).toInt()
-            cropX = (srcW - cropW) / 2
-            cropY = 0
-        } else {
-            cropW = srcW
-            cropH = (srcW / targetRatio).toInt()
-            cropX = 0
-            cropY = (srcH - cropH) / 2
-        }
-
-        val cropped = Bitmap.createBitmap(source, cropX, cropY, cropW, cropH)
-        return Bitmap.createScaledBitmap(cropped, targetWidth, targetHeight, true)
+    private fun applyCrop() {
+        val cropped = cropView.getCroppedBitmap() ?: return
+        val scaled = Bitmap.createScaledBitmap(cropped, targetWidth, targetHeight, true)
+        croppedBitmap = scaled
+        saveBtn.isEnabled = true
+        Toast.makeText(this, "✅ Обрезано. Нажми Сохранить", Toast.LENGTH_SHORT).show()
     }
 
     private fun saveImage() {
-        val bitmap = selectedBitmap ?: return
+        val bitmap = croppedBitmap ?: return
 
         try {
             val filename = "crop916_${System.currentTimeMillis()}.jpg"
